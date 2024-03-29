@@ -1,0 +1,33 @@
+<div>
+    <h2>Ajouter un film</h2>
+    <form [formGroup]="filmForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="name">Nom du film:</label>
+        <input type="text" id="name" formControlName="name">
+      </div>
+      <div>
+        <label for="realisateur">Réalisateur:</label>
+        <input type="text" id="realisateur" formControlName="realisateur">
+      </div>
+      <div>
+        <label for="annee">Année de sortie:</label>
+        <input type="text" id="annee" formControlName="annee">
+      </div>
+      <div>
+        <label for="synopsis">Synopsis:</label>
+        <textarea id="synopsis" formControlName="synopsis"></textarea>
+      </div>
+      <button type="submit" [disabled]="filmForm.invalid">Ajouter</button>
+    </form>
+  </div>
+  
+  <div>
+    <h2>Liste des films</h2>
+    <ul>
+      <li *ngFor="let film of films; let i = index">
+        {{ film.name }} - {{ film.realisateur }} ({{ film.annee }})
+        <button (click)="deleteFilm(i)">Supprimer</button>
+      </li>
+    </ul>
+  </div>
+  
