@@ -1,33 +1,68 @@
-<div>
-    <h2>Ajouter un film</h2>
-    <form [formGroup]="filmForm" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="name">Nom du film:</label>
-        <input type="text" id="name" formControlName="name">
+<div class="container mt-4">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Mon Application</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button class="btn btn-outline-danger" (click)="logout()">Déconnexion</button>
+          </li>
+        </ul>
       </div>
-      <div>
-        <label for="realisateur">Réalisateur:</label>
-        <input type="text" id="realisateur" formControlName="realisateur">
-      </div>
-      <div>
-        <label for="annee">Année de sortie:</label>
-        <input type="text" id="annee" formControlName="annee">
-      </div>
-      <div>
-        <label for="synopsis">Synopsis:</label>
-        <textarea id="synopsis" formControlName="synopsis"></textarea>
-      </div>
-      <button type="submit" [disabled]="filmForm.invalid">Ajouter</button>
-    </form>
+    </div>
+  </nav>
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title">Ajouter un film</h2>
+      <form [formGroup]="filmForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nom du film:</label>
+          <input type="text" id="name" formControlName="name" class="form-control" required>
+          <div class="invalid-feedback">
+            Veuillez entrer le nom du film.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="realisateur" class="form-label">Réalisateur:</label>
+          <input type="text" id="realisateur" formControlName="realisateur" class="form-control" required>
+          <div class="invalid-feedback">
+            Veuillez entrer le nom du réalisateur.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="annee" class="form-label">Année de sortie:</label>
+          <input type="text" id="annee" formControlName="annee" class="form-control" required>
+          <div class="invalid-feedback">
+            Veuillez entrer l'année de sortie.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="synopsis" class="form-label">Synopsis:</label>
+          <textarea id="synopsis" formControlName="synopsis" class="form-control" required></textarea>
+          <div class="invalid-feedback">
+            Veuillez entrer le synopsis du film.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="filmForm.invalid">Ajouter</button>
+      </form>
+    </div>
   </div>
-  
-  <div>
-    <h2>Liste des films</h2>
-    <ul>
-      <li *ngFor="let film of films; let i = index">
-        {{ film.name }} - {{ film.realisateur }} ({{ film.annee }})
-        <button (click)="deleteFilm(i)">Supprimer</button>
-      </li>
-    </ul>
-  </div>
-  
+</div>
+
+<ul class="list-group mt-4">
+  <li *ngFor="let film of films; let i = index" class="list-group-item">
+    <div *ngIf="!film.editMode">
+      {{ film.name }} - {{ film.realisateur }} ({{ film.annee }})
+      <button (click)="editFilm(i)" class="btn btn-sm btn-primary me-2">Modifier</button>
+      <button (click)="deleteFilm(i)" class="btn btn-sm btn-danger">Supprimer</button>
+    </div>
+    <div *ngIf="film.editMode">
+      <input type="text" [(ngModel)]="film.name" class="form-control mb-2">
+      <input type="text" [(ngModel)]="film.realisateur" class="form-control mb-2">
+      <input type="number" [(ngModel)]="film.annee" class="form-control mb-2">
+      <textarea [(ngModel)]="film.synopsis" class="form-control mb-2"></textarea>
+      <button (click)="confirmModification(film)" class="btn btn-sm btn-success me-2">Confirmer modification</button>
+      <button (click)="cancelEdit(film)" class="btn btn-sm btn-secondary">Annuler</button>
+    </div>
+  </li>
+</ul>

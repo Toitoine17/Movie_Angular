@@ -10,13 +10,9 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   email!: string;
   password!: string;
+  errorMessage: string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
-
-  onSubmit() {
-    // Ajoutez ici la logique de soumission du formulaire
-    console.log('Formulaire soumis !');
-  }
 
   login() {
     const encryptedPassword = this.encryptPassword(this.password);
@@ -30,14 +26,15 @@ export class LoginComponent {
         },
         error => {
           console.error('Login error:', error);
-          // Handle login error
+          // Affichage du message d'erreur
+          this.errorMessage = 'Adresse e-mail ou mot de passe incorrect.';
         }
       );
   }
 
   encryptPassword(password: string): string {
-    // Use Bcrypt or any appropriate method to encrypt the password
-    // Example: return bcrypt.hashSync(password, saltRounds);
+    // Utiliser Bcrypt ou toute autre méthode appropriée pour encrypter le mot de passe
+    // Exemple: return bcrypt.hashSync(password, saltRounds);
     return password;
   }
 }
