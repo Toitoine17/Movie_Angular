@@ -11,7 +11,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // Récupérer les données d'identification du corps de la requête
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('name','email', 'password');
     
         // Vérifier si les données d'identification sont correctes
         if (Auth::attempt($credentials)) {
