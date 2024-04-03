@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Film } from '../models/film.model';
 
@@ -7,18 +7,26 @@ import { Film } from '../models/film.model';
   providedIn: 'root'
 })
 export class FilmsService {
-  private apiUrl = 'http://localhost:3000/api/films';
+  private apiUrl = 'http://localhost:8000/api/films';
 
   constructor(private http: HttpClient) { }
 
   getFilms(): Observable<Film[]> {
-    return this.http.get<Film[]>(this.apiUrl);
-  }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
 
+    return this.http.get<Film[]>(this.apiUrl, { headers: headers });
+  }
   createFilm(film: Film): Observable<Film> {
-    return this.http.post<Film>(this.apiUrl, film);
-  }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
 
+    return this.http.post<Film>(this.apiUrl, film, { headers: headers });
+  }
   updateFilm(film: Film): Observable<Film> {
     const url = `${this.apiUrl}/${film.id}`;
     return this.http.put<Film>(url, film);

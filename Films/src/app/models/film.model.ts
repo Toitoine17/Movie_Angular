@@ -1,8 +1,8 @@
 export interface Film {
   id?: number;
-  name: string;
-  realisateur: string;
-  annee: number;
+  title: string;
+  director: string;
+  year: number;
   synopsis: string;
-  editMode?: boolean; 
+  user_id?: string;
 }

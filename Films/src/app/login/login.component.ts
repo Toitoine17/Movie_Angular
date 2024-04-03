@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,26 +13,22 @@ export class LoginComponent {
   password!: string;
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   login() {
-    const encryptedPassword = this.encryptPassword(this.password);
-    const credentials = { email: this.email, password: encryptedPassword };
-    this.http.post('http://localhost:8000/api/login', credentials)
-      .subscribe(
-        (response: any) => {
-          console.log('Login successful:', response);
-          // Redirection vers la page des films
-          this.router.navigate(['/films']);
-        },
-        error => {
-          console.error('Login error:', error);
-          // Affichage du message d'erreur
-          this.errorMessage = 'Adresse e-mail ou mot de passe incorrect.';
-        }
-      );
+    this.authService.login(this.email, this.password).subscribe(
+      () => {
+        console.log('Login successful');
+        // Rediriger vers la page des films après une connexion réussie
+        this.router.navigate(['/films']);
+      },
+      (error) => {
+        console.error('Erreur lors de la connexion : ', error);
+        this.errorMessage = 'Adresse e-mail ou mot de passe incorrect.';
+      }
+    );
   }
-
+  
   encryptPassword(password: string): string {
     // Utiliser Bcrypt ou toute autre méthode appropriée pour encrypter le mot de passe
     // Exemple: return bcrypt.hashSync(password, saltRounds);
