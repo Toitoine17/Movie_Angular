@@ -11,22 +11,15 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // Récupérer les données d'identification du corps de la requête
-        $credentials = $request->only('name','email', 'password');
+        $credentials = $request->only('email', 'password');
     
         // Vérifier si les données d'identification sont correctes
-        if (Auth::attempt($credentials)) {
-            // L'utilisateur est connecté
-            $user = Auth::user();
-            $token = $user->createToken('TokenName')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+        if (!$token = JWTAuth::attempt($credentials)) {
+            // Si les informations d'identification sont incorrectes
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
-        // Si les informations d'identification sont incorrectes
-        return response()->json(['error' => 'Unauthoriz ed'], 401);
-    }
-    public function logout()
-    {
-        Auth::guard('api')->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+
+        // L'utilisateur est connecté, renvoyer le token
+        return response()->json(['token' => $token], 200);
     }
 }

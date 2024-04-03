@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
-    protected $fillable = ['name', 'realisateur', 'annee', 'synopsis', 'user_id'];
+    protected $fillable = ['title', 'director', 'year', 'synopsis', 'user_id'];
+
 
     public function user()
     {

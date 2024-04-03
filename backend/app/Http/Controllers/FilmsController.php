@@ -17,20 +17,24 @@ class FilmsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'annee' => 'required',
-            'realisateur' => 'required',
-            'synopsis' => 'required',
-            
-        ]);
-
         $user = Auth::user();
-        $film = new Film($request->all());
-        $user->films()->save($film);
 
-        return response()->json($film, 201);
+        if ($user) {
+            $film = new Film();
+            $film->title = $request->input('title');
+            $film->director = $request->input('director');
+            $film->year = $request->input('year');
+            $film->synopsis = $request->input('synopsis');
+            $film->user_id = $user->id;
+            
+    
+            $film->save();
+    
+            return response()->json($film, 201);
+        } else {
+          
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
     }
-
 
 }
