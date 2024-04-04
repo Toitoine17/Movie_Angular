@@ -1,5 +1,6 @@
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">Mon Application</a>
-  <a class="nav-link" routerLink="/register">Créer un nouveau compte</a>
-</nav>
-<router-outlet></router-outlet>
+<header>
+  <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-danger">Déconnexion</button>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>

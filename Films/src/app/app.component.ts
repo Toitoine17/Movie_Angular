@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+logout() {
+throw new Error('Method not implemented.');
+}
   title = 'Films';
+isLoggedIn: any;
 }

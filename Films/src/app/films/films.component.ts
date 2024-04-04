@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Film } from '../models/film.model';
 import { FilmsService } from '../services/films.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-films',
@@ -14,19 +15,25 @@ export class FilmsComponent implements OnInit {
   filmForm!: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private filmsService: FilmsService) { }
+  constructor(private fb: FormBuilder, private filmsService: FilmsService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.initFilmForm();
+    this.loadFilms();
+  }
+
+  loadFilms(): void {
+    this.filmsService.getFilms()
+      .subscribe((films: Film[]) => this.films = films);
   }
 
   initFilmForm(): void {
     this.filmForm = this.fb.group({
-      title: ['', Validators.required], // Ajoutez les autres champs du formulaire ici
+      title: ['', Validators.required], 
       director: ['', Validators.required],
       year: ['', [Validators.required, Validators.pattern('[0-9]{4}')]],
       synopsis: ['', Validators.required],
-      user_id: [''] // L'utilisateur doit être connecté pour que cet ID soit défini
+      user_id: [''] 
     });
   }
 
@@ -52,5 +59,9 @@ export class FilmsComponent implements OnInit {
       console.error('Le formulaire est invalide');
       this.errorMessage = 'Le formulaire est invalide';
     }
+  }
+
+  logout() {
+    this.authService.logout(); 
   }
 }
