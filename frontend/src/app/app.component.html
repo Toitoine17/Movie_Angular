@@ -1,0 +1,6 @@
+<header>
+  <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-danger">Déconnexion</button>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>
